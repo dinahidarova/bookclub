@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Личный кабинет{% endblock %}
+{% block content %}
+<h2>Личный кабинет: {{ user.username }}</h2>
+<p>Email: {{ user.email|default:"—" }}</p>
+<p>Дата регистрации: {{ user.date_joined|date:"d.m.Y" }}</p>
+
+<h4 class="mt-4">Последние заявки</h4>
+<ul>
+    {% for r in requests %}
+        <li>{{ r.book.title }} — {{ r.get_status_display }} ({{ r.requested_at|date:"d.m.Y" }})</li>
+    {% empty %}
+        <li>Заявок пока нет.</li>
+    {% endfor %}
+</ul>
+
+<h4 class="mt-4">Мои отзывы</h4>
+<ul>
+    {% for rev in reviews %}
+        <li><a href="{% url 'book_detail' rev.book.pk %}">{{ rev.book.title }}</a> — {{ rev.rating }}★</li>
+    {% empty %}
+        <li>Отзывов пока нет.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
